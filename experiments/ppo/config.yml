@@ -1,0 +1,55 @@
+
+
+agent:
+
+  base:
+    hidden_dim: 128
+    mlp1_layers: 2
+    rnn_layers: 1
+    mlp2_layers: 0
+    activation: tanh
+    rnn_type: 'lstm'
+    residual: true
+
+  critic_loss: 'huber'
+  # inputs: null # Use env config
+
+sampling:
+  env_name: ''
+  env_opts: {}
+  device: 'cpu:0'
+  workers: 8
+  train_trajs: 8 # num workers
+  train_traj_len: 1000
+  eval_trajs: 0 # num workers
+  metrics: null
+
+training:
+  epochs: 2500
+  gae_lam: 0.97
+  gamma: 0.99
+  actor_its: 80  # Or until target_kl is violated
+  critic_its: 80
+  clip_ratio: 0.15
+  ent_alpha: 0.01
+  max_kl: 0.01
+
+  device: 'cuda:0'
+
+  actor_optim:
+    name: adam
+    lr: 1.0e-4
+
+  critic_optim:
+    name: adam
+    lr: 1.0e-4
+
+  actor_clip:
+    type: 'inf'
+    value: 10_000
+
+  critic_clip:
+    type: 'inf'
+    value: 10_000
+
+  save_freq: 50

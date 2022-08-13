@@ -1,0 +1,58 @@
+<mujoco model="ur10e">
+    <compiler angle="radian"/>
+    <size njmax="500" nconmax="100"/>
+    <asset>
+        <mesh name="base" file="base.stl"/>
+        <mesh name="shoulder" file="shoulder.stl"/>
+        <mesh name="upperarm" file="upperarm.stl"/>
+        <mesh name="forearm" file="forearm.stl"/>
+        <mesh name="wrist1" file="wrist1.stl"/>
+        <mesh name="wrist2" file="wrist2.stl"/>
+        <mesh name="wrist3" file="wrist3.stl"/>
+    </asset>
+    <worldbody>
+        <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="base"/>
+        <body name="shoulder_link" pos="0 0 0.181">
+            <inertial pos="0 0 0" mass="7.778" diaginertia="0.0314743 0.0314743 0.0218756"/>
+            <joint name="shoulder_pan_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-6.28319 6.28319"/>
+            <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="shoulder"/>
+            <body name="upper_arm_link" pos="0 0.176 0" quat="0.707107 0 0.707107 0">
+                <inertial pos="0 0 0.3065" mass="12.93" diaginertia="0.423074 0.423074 0.0363656"/>
+                <joint name="shoulder_lift_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-6.28319 6.28319"/>
+                <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="upperarm"/>
+                <body name="forearm_link" pos="0 -0.137 0.613">
+                    <inertial pos="0 0 0.2855" mass="3.87" diaginertia="0.11059 0.11059 0.0108844"/>
+                    <joint name="elbow_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14159 3.14159"/>
+                    <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="forearm"/>
+                    <body name="wrist_1_link" pos="0 0 0.571" quat="0.707107 0 0.707107 0">
+                        <inertial pos="0 0.135 0" quat="0.5 0.5 -0.5 0.5" mass="1.96" diaginertia="0.0055125 0.00510825 0.00510825"/>
+                        <joint name="wrist_1_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-6.28319 6.28319"/>
+                        <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="wrist1"/>
+                        <body name="wrist_2_link" pos="0 0.135 0">
+                            <inertial pos="0 0 0.12" quat="0.5 0.5 -0.5 0.5" mass="1.96" diaginertia="0.0055125 0.00510825 0.00510825"/>
+                            <joint name="wrist_2_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-6.28319 6.28319"/>
+                            <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="wrist2"/>
+                            <body name="wrist_3_link" pos="0 0 0.12">
+                                <inertial pos="0 0.100278 0" quat="0.707107 0 0 0.707107" mass="0.302" diaginertia="1.0002 1.00019 1.00019"/>
+                                <joint name="wrist_3_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-6.28319 6.28319"/>
+                                <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="wrist3"/>
+                                <geom size="0.005 0.005 0.005" pos="0 0.107 0" quat="0.707107 0 0 0.707107" type="box"/>
+                                <site name="toolsite" pos="0 0.117 0" euler="-1.57079632679 0 0" />
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <!-- https://www.universal-robots.com/articles/ur/robot-care-maintenance/max-joint-torques/ -->
+    <!-- <actuator>
+      <velocity name="shoulder_pan" joint="shoulder_pan_joint" ctrlrange="-1 1" gear="330" />
+      <velocity name="shoulder_lift" joint="shoulder_lift_joint" ctrlrange="-1 1" gear="330" />
+      <velocity name="elbow" joint="elbow_joint" ctrlrange="-1 1" gear="150" />
+      <velocity name="wrist_1" joint="wrist_1_joint" ctrlrange="-1 1" gear="56" />
+      <velocity name="wrist_2" joint="wrist_2_joint" ctrlrange="-1 1" gear="56" />
+      <velocity name="wrist_3" joint="wrist_3_joint" ctrlrange="-1 1" gear="56" />
+    </actuator> -->
+</mujoco>

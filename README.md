@@ -1,9 +1,6 @@
 # exposed-mc
 Code for the paper "Vessel-to-Vessel Motion Compensation with Reinforcement Learning
 
-**REGARDING DATA**
-The vessel motion trajectory data is currently unpublished, pending approval from owners. We hope to resolve this as soon as possible.
-
 ## Setup
 
 Below follows instructions for setting up the codebase.
@@ -19,7 +16,7 @@ To build the docker iamge run:
 ```bash
 ./docker/build.sh
 ```
-This will build a docker image with the name `<username>/exposed-mcx` where `<username>` is the name of the current logged in user.
+This will build a docker image with the name `<username>/exposed-mc` where `<username>` is the name of the current logged in user.
 
 
 #### Running 
@@ -68,4 +65,20 @@ For instance, to train the model for the first seed of delay configuration $\mat
 ```bash
 docker/run.sh python -m exposed.agents.ppo training/ --seed 0 --wandb exposed-mcx:smooth_20 --name "mcx_smooth_20-$SEED" -c.sampling.env_name v2v:train_smooth_20
 ```
+
+## Evaluating 
+
+To evaluate the agent we just trained, execute:
+
+```bash
+docker/run.sh python evaluate.py v2v:eval_hs25_smooth_20 ppo --greedy --seed 0 --episodes 50 --exp training/mcx_smooth_20-0 --save results_ppo.h5
+```
+This will evaluate the trained agent (with config and network parameters found in `training/mcx_smooth_20-0`) on an environment with delay configuration $\mathcal{D}_B(4, 21)$ and sea state $\mathcal{W}_d$ (significant wave height = 2.5 meter) for 50 episodes and save all observations, actions, and rewards in a HDF file called `results_ppo.h5`
+
+To run the baseline agent on the same environment, execute:
+```bash
+docker/run.sh python evaluate.py v2v:eval_hs10_delay_0 constant --seed 0 --episodes 50 --save results_baseline.h5
+```
+
+This will generate corresponding results for the baseline. Note that since we use environment seed `0` for both evaluations, the vessel motions encountered in both runs will be exactly the same.
 
